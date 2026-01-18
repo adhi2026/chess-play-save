@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Users, Bot, Crown, LogIn, LogOut } from 'lucide-react';
+import { Users, Bot, Crown, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -66,35 +66,52 @@ export default function Index() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto"
           >
-            {user 
+          {user 
               ? "Welcome back! Choose your game mode below."
-              : "A clean, elegant chess experience. Sign in to play against AI or play locally as a guest."}
+              : "A clean, elegant chess experience. Play locally with a friend or challenge the AI."}
           </motion.p>
 
           {!user ? (
-            /* Login Prompt for guests */
+            /* Play Options for guests */
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="space-y-6"
+              className="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto"
             >
-              <Link to="/auth">
-                <Button size="lg" className="px-8">
-                  <LogIn className="w-5 h-5 mr-2" />
-                  Sign In to Play
-                </Button>
+              {/* Local Game */}
+              <Link to="/local" className="block">
+                <div className="chess-card p-6 h-full hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+                      <Users className="w-7 h-7 text-primary" />
+                    </div>
+                    <h2 className="font-serif text-xl font-semibold mb-2">
+                      Local Play
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      Two players, one device. Perfect for casual games with friends.
+                    </p>
+                  </div>
+                </div>
               </Link>
-              
-              <div className="text-muted-foreground">
-                <p className="text-sm mb-4">Or play as a guest:</p>
-                <Link to="/local">
-                  <Button variant="outline" size="lg">
-                    <Users className="w-5 h-5 mr-2" />
-                    Local Play (Guest)
-                  </Button>
-                </Link>
-              </div>
+
+              {/* AI Game */}
+              <Link to="/ai" className="block">
+                <div className="chess-card p-6 h-full hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+                      <Bot className="w-7 h-7 text-primary" />
+                    </div>
+                    <h2 className="font-serif text-xl font-semibold mb-2">
+                      Play vs AI
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      Challenge the computer and improve your skills.
+                    </p>
+                  </div>
+                </div>
+              </Link>
             </motion.div>
           ) : (
             /* Play Options for logged-in users */
